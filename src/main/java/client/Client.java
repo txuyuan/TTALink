@@ -1,5 +1,7 @@
 package client;
 
+import Data.Coordinate;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,7 +14,29 @@ public class Client {
     private DataInputStream input = null;
     private DataOutputStream out = null;
 
-    public Client (String address){
+    /**
+     * Client object to send coordinate (time, location) data to server
+     * Use Client.send with appropriate parameters for each set of time-location coordinates
+     * Remember to close connection with Client.close, or the connection will keep running and produce errors
+     * If no address is supplied default of 34.126.108.92 is used
+     * @return Client object to send data to server
+     */
+    public Client (){
+        connect("34.126.108.92");
+    }
+    /**
+     * Client object to send coordinate (time, location) data to server
+     * Use Client.send with appropriate parameters for each set of time-location coordinates
+     * Remember to close connection with Client.close, or the connection will keep running and produce errors
+     * If no address is supplied default of 34.126.108.92 is used
+     * @param address Target server address (IP Address)
+     * @return Client object to send data to server
+     */
+    public Client(String address){
+        connect(address);
+    }
+
+    private void connect(String address){
         try{
             socket = new Socket(address, 443);
             System.out.println("Connected");
@@ -23,25 +47,48 @@ public class Client {
         }catch (IOException i){
             System.out.println(i);
         }
+    }
 
-        String line = "";
-        while (line!="over"){
-            try{
-                line = input.readUTF();
-                out.writeUTF(line);
-            }catch (IOException i){
-                System.out.println(i);
-            }
+    //Functions
+
+    /**
+     * Send coordinate data along established connection
+     * Note: Close connection after all data is sent
+     * @param year Year in Gregorian Calendar (eg. 2021)
+     * @param month Month of Year (eg. 7 for July)
+     * @param day Day of Month (eg. 4)
+     * @param hour Hour of Day (24h clock)
+     * @param minute Minute of Hour (0-59)
+     * @param latitude Latitude of location (-90 to 90)
+     * @param longtitude Longtitude of location (-180 to 180)
+     */
+    public void send (int year, int month, int day, int hour, int minute, double latitude, double longtitude){
+        try {
+            long epoch = (new Coordinate(year, month, day, hour, minute, latitude, longtitude)).getEpochTime();
+        }catch (IllegalArgumentException i){
+            throw i;
         }
-
+        long epoch = (new Coordinate(year, month, day, hour, minute, latitude, longtitude)).getEpochTime();
+        String data = epoch + "~" + latitude + "~" + longtitude;
         try{
-            input.close();
-            out.close();
-            socket.close();
+            out.writeUTF(data);
         }catch(IOException i){
             System.out.println(i);
         }
-
-
     }
+
+    /** Terminate connection to server. Client object is terminated.*/
+    public void close() {
+        try {
+            input.close();
+            out.close();
+            socket.close();
+        } catch (IOException i) {
+            System.out.println(i);
+        }
+        socket = null;
+        input = null;
+        out = null;
+    }
+
 }

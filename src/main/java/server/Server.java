@@ -11,6 +11,7 @@ public class Server {
     private Socket socket = null;
     private ServerSocket server = null;
     private DataInputStream in = null;
+    private Boolean isActive = false;
 
     public Server(){
         try{
@@ -20,6 +21,7 @@ public class Server {
             System.out.println("Client Accepted");
             in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             receive();
+            isActive = true;
         }catch(IOException i){
             System.out.println(i);
         }
@@ -38,10 +40,16 @@ public class Server {
             }
             line = "";
         }
-        Data.sort(data);
+        DataProc.sort(data);
         receive();
     }
 
+    public Boolean isActive(){
+        return isActive;
+    }
+
+
+    //Terminate
     public void close(){
         try{
             socket.close();
@@ -49,6 +57,9 @@ public class Server {
         }catch(IOException i){
             System.out.println(i);
         }
+        socket = null;
+        server = null;
+        in = null;
     }
 
 }
