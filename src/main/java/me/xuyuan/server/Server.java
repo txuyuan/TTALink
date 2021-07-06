@@ -11,11 +11,13 @@ public class Server extends Thread{
     private Socket socket = null;
     private ServerSocket server = null;
     private DataInputStream in = null;
+    private Boolean isRunning = false;
 
     public Server(Socket socket, ServerSocket server) throws IOException{
         this.socket = socket;
         this.server = server;
         in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        isRunning = true;
     }
 
     @Override
