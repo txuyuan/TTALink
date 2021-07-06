@@ -1,4 +1,4 @@
-package server;
+package me.xuyuan.server;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -7,27 +7,19 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class Server {
+public class Server extends Thread{
     private Socket socket = null;
     private ServerSocket server = null;
     private DataInputStream in = null;
-    private Boolean isActive = false;
 
-    public Server(){
-        try{
-            server = new ServerSocket(443);
-            System.out.println("Server Started, waiting for client");
-            socket = server.accept();
-            System.out.println("Client Accepted");
-            in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-            receive();
-            isActive = true;
-        }catch(IOException i){
-            System.out.println(i);
-        }
+    public Server(Socket socket, ServerSocket server) throws IOException{
+        this.socket = socket;
+        this.server = server;
+        in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 
-    private void receive(){
+    @Override
+    public void run(){
         String line = "";
         ArrayList<String> data = new ArrayList<String>();
 
@@ -41,16 +33,11 @@ public class Server {
             line = "";
         }
         DataProc.sort(data);
-        receive();
+        close();
     }
-
-    public Boolean isActive(){
-        return isActive;
-    }
-
 
     //Terminate
-    public void close(){
+    private void close(){
         try{
             socket.close();
             in.close();

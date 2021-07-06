@@ -1,8 +1,7 @@
-package client;
+package me.xuyuan.client;
 
-import Data.Coordinate;
+import me.xuyuan.data.Coordinate;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -11,7 +10,6 @@ import java.net.UnknownHostException;
 public class Client {
 
     private Socket socket = null;
-    private DataInputStream input = null;
     private DataOutputStream out = null;
 
     /**
@@ -40,7 +38,6 @@ public class Client {
         try{
             socket = new Socket(address, 443);
             System.out.println("Connected");
-            input = new DataInputStream(System.in);
             out = new DataOutputStream(socket.getOutputStream());
         }catch (UnknownHostException u){
             System.out.println(u);
@@ -80,14 +77,12 @@ public class Client {
     /** Terminate connection to server. Client object is terminated.*/
     public void close() {
         try {
-            input.close();
             out.close();
             socket.close();
         } catch (IOException i) {
             System.out.println(i);
         }
         socket = null;
-        input = null;
         out = null;
     }
 

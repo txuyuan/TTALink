@@ -1,6 +1,6 @@
-package server;
+package me.xuyuan.server;
 
-import Data.Coordinate;
+import me.xuyuan.data.Coordinate;
 
 import java.util.ArrayList;
 import java.util.List;

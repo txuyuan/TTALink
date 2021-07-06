@@ -1,21 +1,32 @@
-package TTA;
+package me.xuyuan.TTA;
 
-import Data.Coordinate;
-import server.Server;
+import me.xuyuan.server.Server;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main (String[] args){
+    public static void main (String[] args) throws IOException{
         Scanner in = new Scanner(System.in);
         read(in);
 
         if(args[0] == "server"){
-            while((new Server()).isActive())
-                System.out.println("test");
-            //TODO: Add loop to ensure multiple-client support
+            while(true){
+                Socket socket = null;
+                ServerSocket server = null;
+                System.out.println("Listening on port 443");
+                server = new ServerSocket(443);
+                socket = server.accept();
+                System.out.println("Client Accepted");
+                Thread t = new Server(socket, server);
+                t.start();
+            }
         }
+
+
     }
 
     //Read cmd input
