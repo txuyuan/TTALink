@@ -1,14 +1,23 @@
 package me.xuyuan.data;
 
-import java.util.Calendar;
-import java.util.TimeZone;
+import me.xuyuan.server.ConvertCal;
+import org.bson.Document;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
 
-public class Coordinate {
+import java.io.Serializable;
+import java.util.UUID;
 
+public class Coordinate implements Serializable {
+
+    @BsonProperty(value = "epochTime")
     private long time;
+    @BsonProperty(value = "latitude")
     private double lat;
+    @BsonProperty(value = "longtitude")
     private double longt;
-    private Calendar cal;
+    private UUID clientID;
 
     //Builders
     /**
@@ -18,14 +27,11 @@ public class Coordinate {
      * @param longtitude Longtitude (-180 to 180)
      * @return Coordinate object of all neccesary values (time, location)
      */
-    public Coordinate(long epoch, double latitude, double longtitude){
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        cal.setTimeInMillis(epoch);
-
+    public Coordinate(long epoch, double latitude, double longtitude, UUID clientID){
         this.time = epoch;
-        this.cal = cal;
         this.lat = latitude;
         this.longt = longtitude;
+        this.clientID = clientID;
     }
 
     /**
@@ -51,17 +57,11 @@ public class Coordinate {
         if(minute%5 !=0)
             throw new IllegalArgumentException(minute + " mins is invalid. Must be multiple of 5");
 
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        cal.set(year, month, day, hour, minute);
-        long epoch = cal.getTimeInMillis();
+        long epoch = ConvertCal.getEpoch(year, month, day, hour, minute);
         //Round&truncate to seconds
         long rem = epoch%1000;
-        if(rem >= 500)
-            epoch = (epoch+1000-rem)/1000;
-        else
-            epoch = (epoch-rem)/1000;
+        epoch = (rem >= 500) ? (epoch+1000-rem)/1000 : (epoch-rem)/1000;
 
-        this.cal = cal;
         this.time = epoch;
         this.lat = latitude;
         this.longt = longtitude;
@@ -72,44 +72,41 @@ public class Coordinate {
 
 
     //Callers
+    @BsonIgnore
     /** @return latitude (Double)*/
-    public double getLatitude(){
-        return lat;
-    }
+    public double getLatitude(){ return lat; }
+    @BsonIgnore
     /** @return longtitude (Double)*/
-    public double getLongtitude(){
-        return longt;
-    }
+    public double getLongtitude(){ return longt; }
+    @BsonIgnore
     /** @return Unix Epoch Value > Number of seconds since 1Jan, 1970 (Long)*/
-    public long getEpochTime(){
-        return time;
-    }
-    /** @return Calendar Object > Java.Util.Calendar (Calendar)*/
-    public Calendar getCalendar(){
-        return cal;
-    }
-    //Time details
-    /** @return Year (int)*/
-    public int getYear(){
-        return cal.get(Calendar.YEAR);
-    }
-    /** @return Month of Year (int)*/
-    public int getMonth(){
-        return cal.get(Calendar.MONTH);
-    }
-    /** @return Day of Month (int)*/
-    public int getDay(){
-        return cal.get(Calendar.DAY_OF_MONTH);
-    }
-    /** @return Hour of Day (int)*/
-    public int getHour(){
-        return cal.get(Calendar.HOUR_OF_DAY);
-    }
-    /** @return Minute of Hour (int)*/
-    public int getMinute(){
-        return cal.get(Calendar.MINUTE);
-    }
+    public long getEpoch(){ return time; }
+    @BsonIgnore
+    /** @return Client UUID*/
+    public UUID getClientID(){ return clientID; }
 
+    //Time details
+    @BsonIgnore
+    /** @return Year (int)*/
+    public int getYear(){ return ConvertCal.getYear(time); }
+    @BsonIgnore
+    /** @return Month of Year (int)*/
+    public int getMonth(){ return ConvertCal.getMonth(time); }
+    @BsonIgnore
+    /** @return Day of Month (int)*/
+    public int getDay(){ return ConvertCal.getDay(time); }
+    @BsonIgnore
+    /** @return Hour of Day (int)*/
+    public int getHour(){ return ConvertCal.getHour(time); }
+    @BsonIgnore
+    /** @return Minute of Hour (int)*/
+    public int getMinute(){ return ConvertCal.getMinute(time); }
+
+
+    public Document getDocument(){
+        //Document coordinate = new Document("_id", );
+        return null;
+    }
 
 
 }
