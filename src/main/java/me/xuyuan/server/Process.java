@@ -1,6 +1,7 @@
 package me.xuyuan.server;
 
 import me.xuyuan.data.Coordinate;
+import org.bson.types.ObjectId;
 
 import java.security.spec.ECField;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class Process {
             Coordinate co = null;
             Boolean valid = true;
             try{
-                co = new Coordinate(Long.parseLong(split[0]), Double.parseDouble(split[1]), Double.parseDouble(split[2]), UUID.fromString(split[3]));
+                co = new Coordinate(Long.parseLong(split[0]), Double.parseDouble(split[1]), Double.parseDouble(split[2]), UUID.fromString(split[3]), new ObjectId(split[4]));
             }catch(Exception e){
                 System.out.println(e);
                 valid = false;}

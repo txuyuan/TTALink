@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.UUID;
+import org.bson.types.ObjectId;
 
 public class Client {
 
@@ -62,14 +63,14 @@ public class Client {
      * @param longtitude Longtitude of location (-180 to 180)
      * @param uuid Unique Identifier for client. Ensure this is based on device
      */
-    public void send (int year, int month, int day, int hour, int minute, double latitude, double longtitude, UUID uuid){
+    public void send (int year, int month, int day, int hour, int minute, double latitude, double longtitude, UUID uuid, ObjectId objectId){
         try {
-            long epoch = (new Coordinate(year, month, day, hour, minute, latitude, longtitude)).getEpoch();
+            long epoch = (new Coordinate(year, month, day, hour, minute, latitude, longtitude, objectId)).getEpoch();
         }catch (IllegalArgumentException i){
             throw i;
         }
-        long epoch = (new Coordinate(year, month, day, hour, minute, latitude, longtitude)).getEpoch();
-        String data = epoch + "~" + latitude + "~" + longtitude + "~" + uuid.toString();
+        long epoch = (new Coordinate(year, month, day, hour, minute, latitude, longtitude, objectId)).getEpoch();
+        String data = epoch + "~" + latitude + "~" + longtitude + "~" + uuid.toString() + "~" + objectId.toString();
         try{
             out.writeUTF(data);
         }catch(IOException i){

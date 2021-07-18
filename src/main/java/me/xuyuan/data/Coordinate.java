@@ -1,11 +1,13 @@
 package me.xuyuan.data;
 
+import com.mongodb.client.model.EstimatedDocumentCountOptions;
 import me.xuyuan.server.ConvertCal;
 import org.bson.Document;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
+import javax.print.Doc;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -17,7 +19,10 @@ public class Coordinate implements Serializable {
     private double lat;
     @BsonProperty(value = "longtitude")
     private double longt;
+    @BsonProperty(value = "clientId")
     private UUID clientID;
+    @BsonProperty(value = "objectId")
+    private ObjectId objectId;
 
     //Builders
     /**
@@ -27,11 +32,13 @@ public class Coordinate implements Serializable {
      * @param longtitude Longtitude (-180 to 180)
      * @return Coordinate object of all neccesary values (time, location)
      */
-    public Coordinate(long epoch, double latitude, double longtitude, UUID clientID){
+
+    public Coordinate(long epoch, double latitude, double longtitude, UUID clientID, ObjectId id){
         this.time = epoch;
         this.lat = latitude;
         this.longt = longtitude;
         this.clientID = clientID;
+        this.objectId = id;
     }
 
     /**
@@ -45,7 +52,7 @@ public class Coordinate implements Serializable {
      * @param longtitude Longtitude of location (-180 to 180)
      * @return Coordinate object of all neccesary values (time, location)
      */
-    public Coordinate(int year, int month, int day, int hour, int minute, double latitude, double longtitude){
+    public Coordinate(int year, int month, int day, int hour, int minute, double latitude, double longtitude, ObjectId id){
         if(latitude > 90 || latitude < -90)
             throw new IllegalArgumentException("Latitude must be between -90 and 90, input was " + latitude);
         if(longtitude > 180 || longtitude < -180)
@@ -65,48 +72,57 @@ public class Coordinate implements Serializable {
         this.time = epoch;
         this.lat = latitude;
         this.longt = longtitude;
+        this.objectId = id;
+    }
 
 
+
+    //Codec
+    public Document getDocument(){
+        Document doc = new Document();
+        doc.append("time", time);
+        doc.append("lat", lat);
+        doc.append("longt", longt);
+        doc.append("clientId", clientID);
+        doc.append("_id", objectId);
+        return doc;
+    }
+
+    public static Coordinate getCoordinate(Document doc){
+        Long time = (Long)doc.get("time");
+        Double lat = (Double)doc.get("lat");
+        Double longt = (Double)doc.get("longt");
+        UUID clientId = (UUID)doc.get("clientId");
+        ObjectId objectId = (ObjectId)doc.get("_id");
+
+        Coordinate coordinate = new Coordinate(time, lat, longt, clientId, objectId);
+        return coordinate;
     }
 
 
 
     //Callers
-    @BsonIgnore
     /** @return latitude (Double)*/
     public double getLatitude(){ return lat; }
-    @BsonIgnore
     /** @return longtitude (Double)*/
     public double getLongtitude(){ return longt; }
-    @BsonIgnore
     /** @return Unix Epoch Value > Number of seconds since 1Jan, 1970 (Long)*/
     public long getEpoch(){ return time; }
-    @BsonIgnore
     /** @return Client UUID*/
     public UUID getClientID(){ return clientID; }
+    /** @return Coordinate ID (ObjectID)*/
+    public ObjectId getObjectId(){ return objectId;}
 
     //Time details
-    @BsonIgnore
     /** @return Year (int)*/
     public int getYear(){ return ConvertCal.getYear(time); }
-    @BsonIgnore
     /** @return Month of Year (int)*/
     public int getMonth(){ return ConvertCal.getMonth(time); }
-    @BsonIgnore
     /** @return Day of Month (int)*/
     public int getDay(){ return ConvertCal.getDay(time); }
-    @BsonIgnore
     /** @return Hour of Day (int)*/
     public int getHour(){ return ConvertCal.getHour(time); }
-    @BsonIgnore
     /** @return Minute of Hour (int)*/
     public int getMinute(){ return ConvertCal.getMinute(time); }
-
-
-    public Document getDocument(){
-        //Document coordinate = new Document("_id", );
-        return null;
-    }
-
 
 }
