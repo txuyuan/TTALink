@@ -34,7 +34,7 @@ public class Server extends Thread{
             }
             line = "";
         }
-        DataProc.sort(data);
+        Process.sort(data);
         close();
     }
 

@@ -1,14 +1,19 @@
 package me.xuyuan.data;
 
-import java.util.Calendar;
-import java.util.TimeZone;
+import me.xuyuan.server.ConvertCal;
+import org.bson.Document;
+import org.bson.types.ObjectId;
 
-public class Coordinate {
+import java.io.Serializable;
+import java.util.UUID;
+
+public class Coordinate implements Serializable {
 
     private long time;
     private double lat;
     private double longt;
-    private Calendar cal;
+    private UUID clientID;
+    private ObjectId objectId;
 
     //Builders
     /**
@@ -18,14 +23,13 @@ public class Coordinate {
      * @param longtitude Longtitude (-180 to 180)
      * @return Coordinate object of all neccesary values (time, location)
      */
-    public Coordinate(long epoch, double latitude, double longtitude){
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        cal.setTimeInMillis(epoch);
 
+    public Coordinate(long epoch, double latitude, double longtitude, UUID clientID, ObjectId id){
         this.time = epoch;
-        this.cal = cal;
         this.lat = latitude;
         this.longt = longtitude;
+        this.clientID = clientID;
+        this.objectId = id;
     }
 
     /**
@@ -39,7 +43,7 @@ public class Coordinate {
      * @param longtitude Longtitude of location (-180 to 180)
      * @return Coordinate object of all neccesary values (time, location)
      */
-    public Coordinate(int year, int month, int day, int hour, int minute, double latitude, double longtitude){
+    public Coordinate(int year, int month, int day, int hour, int minute, double latitude, double longtitude, ObjectId id){
         if(latitude > 90 || latitude < -90)
             throw new IllegalArgumentException("Latitude must be between -90 and 90, input was " + latitude);
         if(longtitude > 180 || longtitude < -180)
@@ -51,65 +55,65 @@ public class Coordinate {
         if(minute%5 !=0)
             throw new IllegalArgumentException(minute + " mins is invalid. Must be multiple of 5");
 
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        cal.set(year, month, day, hour, minute);
-        long epoch = cal.getTimeInMillis();
+        long epoch = ConvertCal.getEpoch(year, month, day, hour, minute);
         //Round&truncate to seconds
         long rem = epoch%1000;
-        if(rem >= 500)
-            epoch = (epoch+1000-rem)/1000;
-        else
-            epoch = (epoch-rem)/1000;
+        epoch = (rem >= 500) ? (epoch+1000-rem)/1000 : (epoch-rem)/1000;
 
-        this.cal = cal;
         this.time = epoch;
         this.lat = latitude;
         this.longt = longtitude;
+        this.objectId = id;
+    }
 
 
+
+    //Codec
+    public Document getDocument(){
+        Document doc = new Document();
+        doc.append("time", time);
+        doc.append("lat", lat);
+        doc.append("longt", longt);
+        doc.append("clientId", clientID);
+        doc.append("_id", objectId);
+        return doc;
+    }
+
+    public static Coordinate getCoordinate(Document doc){
+        Long time = (Long)doc.get("time");
+        Double lat = (Double)doc.get("lat");
+        Double longt = (Double)doc.get("longt");
+        UUID clientId = (UUID)doc.get("clientId");
+        ObjectId objectId = (ObjectId)doc.get("_id");
+
+        Coordinate coordinate = new Coordinate(time, lat, longt, clientId, objectId);
+        return coordinate;
     }
 
 
 
     //Callers
     /** @return latitude (Double)*/
-    public double getLatitude(){
-        return lat;
-    }
+    public double getLatitude(){ return lat; }
     /** @return longtitude (Double)*/
-    public double getLongtitude(){
-        return longt;
-    }
+    public double getLongtitude(){ return longt; }
     /** @return Unix Epoch Value > Number of seconds since 1Jan, 1970 (Long)*/
-    public long getEpochTime(){
-        return time;
-    }
-    /** @return Calendar Object > Java.Util.Calendar (Calendar)*/
-    public Calendar getCalendar(){
-        return cal;
-    }
+    public long getEpoch(){ return time; }
+    /** @return Client UUID*/
+    public UUID getClientID(){ return clientID; }
+    /** @return Coordinate ID (ObjectID)*/
+    public ObjectId getObjectId(){ return objectId;}
+
     //Time details
     /** @return Year (int)*/
-    public int getYear(){
-        return cal.get(Calendar.YEAR);
-    }
+    public int getYear(){ return ConvertCal.getYear(time); }
     /** @return Month of Year (int)*/
-    public int getMonth(){
-        return cal.get(Calendar.MONTH);
-    }
+    public int getMonth(){ return ConvertCal.getMonth(time); }
     /** @return Day of Month (int)*/
-    public int getDay(){
-        return cal.get(Calendar.DAY_OF_MONTH);
-    }
+    public int getDay(){ return ConvertCal.getDay(time); }
     /** @return Hour of Day (int)*/
-    public int getHour(){
-        return cal.get(Calendar.HOUR_OF_DAY);
-    }
+    public int getHour(){ return ConvertCal.getHour(time); }
     /** @return Minute of Hour (int)*/
-    public int getMinute(){
-        return cal.get(Calendar.MINUTE);
-    }
-
-
+    public int getMinute(){ return ConvertCal.getMinute(time); }
 
 }
