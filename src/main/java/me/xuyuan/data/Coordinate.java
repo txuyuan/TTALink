@@ -1,27 +1,18 @@
 package me.xuyuan.data;
 
-import com.mongodb.client.model.EstimatedDocumentCountOptions;
 import me.xuyuan.server.ConvertCal;
 import org.bson.Document;
-import org.bson.codecs.pojo.annotations.BsonIgnore;
-import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
-import javax.print.Doc;
 import java.io.Serializable;
 import java.util.UUID;
 
 public class Coordinate implements Serializable {
 
-    @BsonProperty(value = "epochTime")
     private long time;
-    @BsonProperty(value = "latitude")
     private double lat;
-    @BsonProperty(value = "longtitude")
     private double longt;
-    @BsonProperty(value = "clientId")
     private UUID clientID;
-    @BsonProperty(value = "objectId")
     private ObjectId objectId;
 
     //Builders
