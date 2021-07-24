@@ -1,5 +1,7 @@
 package me.xuyuan.server;
 
+import me.xuyuan.TTA.MainData;
+
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -13,12 +15,17 @@ public class Server extends Thread{
     private ServerSocket server = null;
     private DataInputStream in = null;
     private Boolean isRunning = false;
+    private MainData data;
+    private int cInd;
 
-    public Server(Socket socket, ServerSocket server) throws IOException{
+    public Server(Socket socket, ServerSocket server, MainData data, int cInd) throws IOException{
         this.socket = socket;
         this.server = server;
         in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         isRunning = true;
+        this.data = data;
+        this.cInd = cInd;
+        data.setStatus(cInd, true);
     }
 
     @Override
@@ -50,6 +57,7 @@ public class Server extends Thread{
         socket = null;
         server = null;
         in = null;
+        data.setStatus(cInd, false);
     }
 
 }

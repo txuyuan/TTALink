@@ -11,6 +11,7 @@ import me.xuyuan.server.Database;
 import me.xuyuan.server.Process;
 import me.xuyuan.server.Server;
 import org.bson.Document;
+import org.bson.types.MinKey;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;
@@ -23,33 +24,30 @@ public class Main {
 
     public static void main (String[] args){
 
-        Database db = new Database("34.126.108.92:27017");
-        List<String> testData = Arrays.asList("1625840365~1.349024207451044~103.71602810739925~9a9b92ca-9b1c-40e9-a297-345c4b3e6036~60fbb487cef88854141d39e2");
-        Process.sort(testData);
+        MainData counter = new MainData();
 
-        ObjectId testId = new ObjectId("60fbb487cef88854141d39e2");
-        Coordinate co = db.getCoordinate(testId);
-        System.out.print(co.toString());
-
-        /*Scanner in = new Scanner(System.in);
-        Thread readT = new ReadIn(in);
+        Scanner in = new Scanner(System.in);
+        Thread readT = new ReadIn(in, counter);
         readT.start();
-        
+
         switch(args[0]){
-            case "server":{
-                while(true){
-                    Socket socket = null;
-                    ServerSocket server = null;
-                    System.out.println("Listening on port 443");
-                    server = new ServerSocket(443);
-                    socket = server.accept();
-                    System.out.println("Client Accepted");
-                    Thread t = new Server(socket, server);
-                    t.start();
+            default: {
+                for(int ind=1; counter.allowNew; ind++){
+                    counter.updateInd(ind);
+                    try {
+                        Socket socket = null;
+                        ServerSocket server = null;
+                        System.out.println("Listening on port 443");
+                        server = new ServerSocket(443);
+                        socket = server.accept();
+                        System.out.println("Client Accepted");
+                        Thread t = new Server(socket, server, counter, ind);
+                        t.start();
+                    }catch(IOException e){e.printStackTrace();}
                 }
             }
 
 
-        }*/
+        }
     }
 }
