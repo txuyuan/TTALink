@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Server extends Thread{
     private Socket socket = null;
@@ -23,7 +24,7 @@ public class Server extends Thread{
     @Override
     public void run(){
         String line = "";
-        ArrayList<String> data = new ArrayList<String>();
+        List<String> data = new ArrayList<>();
 
         while(line!="over"){
             try{

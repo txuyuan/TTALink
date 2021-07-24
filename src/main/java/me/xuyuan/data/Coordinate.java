@@ -98,7 +98,7 @@ public class Coordinate implements Serializable {
     public double getLongtitude(){ return longt; }
     /** @return Unix Epoch Value > Number of seconds since 1Jan, 1970 (Long)*/
     public long getEpoch(){ return time; }
-    /** @return Client UUID*/
+    /** @return Client Device UUID*/
     public UUID getClientID(){ return clientID; }
     /** @return Coordinate ID (ObjectID)*/
     public ObjectId getObjectId(){ return objectId;}
@@ -114,5 +114,11 @@ public class Coordinate implements Serializable {
     public int getHour(){ return ConvertCal.getHour(time); }
     /** @return Minute of Hour (int)*/
     public int getMinute(){ return ConvertCal.getMinute(time); }
+
+    /** @return Essential data from object (ObjectId, time, latitude, longtitude, ClientId)*/
+    public String toString(){
+        String output = "ObjectId: " + objectId + ", Time: " + time + ", Latitude: " + lat + ", Longtitude: " + longt + ", ClientId: " + clientID;
+        return output;
+    }
 
 }

@@ -1,12 +1,16 @@
 package me.xuyuan.server;
 
 import com.mongodb.*;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import me.xuyuan.data.Coordinate;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import javax.print.Doc;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,16 +19,18 @@ public class Database {
     MongoClient client = null;
     MongoDatabase database = null;
 
+    /** Database constructor for local server*/
     public Database(){
         try{
             MongoClient client = new MongoClient();
-            database = client.getDatabase("TTADB");
+            database = client.getDatabase("TtaDb");
         }catch(Exception e){ System.out.println(e);}
     }
+    /** @param uri IP Address of target server. Include ports*/
     public Database(String uri){
         try{
             MongoClient client = new MongoClient(uri);
-            database = client.getDatabase("TTADB");
+            database = client.getDatabase("TtaDb");
         }catch(Exception e){ System.out.println(e);}
     }
 
@@ -32,13 +38,38 @@ public class Database {
 
     //Functions
     public void save(List<Coordinate> coList){
+        MongoCollection<Document> collection = database.getCollection("coordinates");
         try{
-            MongoCollection<Document> collection = database.getCollection("coordinates");
             for(Coordinate co : coList)
                 collection.insertOne(co.getDocument());
         }catch(Exception e){
             System.out.println(e);
         }
+    }
+
+    /**
+     * Gets Coordinate object from target ObjectId
+     * Returns null if object nonexistent or other error printed
+     * @param id ObjectId of intended object
+     */
+    public Coordinate getCoordinate(ObjectId id){
+        MongoCollection<Document> collection = database.getCollection("coordinates");
+        Coordinate co;
+        try{
+            FindIterable<Document> it = collection.find(Filters.eq("_id", id));
+            List<Document> docs = new ArrayList<>();
+            for(Document doc : it)
+                docs.add(doc);
+            if(docs.size()!=1) {
+                System.out.println("Document retrieval gave " + docs.size() + " documents");
+                return null;
+            }
+            co = Coordinate.getCoordinate(docs.get(0));
+            return co;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

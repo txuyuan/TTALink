@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class Process {
 
-    public static void sort(ArrayList<String> dataArray){
+    public static void sort(List<String> dataArray){
         List<Coordinate> data = new ArrayList<>();
         for(String i : dataArray){
             String[] split = i.split("~");
@@ -21,9 +21,9 @@ public class Process {
             if(co!=null) data.add(co);
         }
 
-        Database db = new Database();
+        Database db = new Database("34.126.108.92:27017");
         db.save(data);
-        db.close();
+        //db.close();
     }
 
 
