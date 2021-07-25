@@ -1,6 +1,5 @@
 package me.xuyuan.client;
 
-import me.xuyuan.TTA.ReadIn;
 import me.xuyuan.data.Coordinate;
 
 import java.io.DataOutputStream;
@@ -63,7 +62,7 @@ public class Client {
      * @param longtitude Longtitude of location (-180 to 180)
      * @param uuid Unique Identifier for client. Ensure this is based on device
      */
-    public void send (int year, int month, int day, int hour, int minute, double latitude, double longtitude, UUID uuid, ObjectId objectId){
+    public void sendT (int year, int month, int day, int hour, int minute, double latitude, double longtitude, UUID uuid, ObjectId objectId){
         try {
             long epoch = (new Coordinate(year, month, day, hour, minute, latitude, longtitude, objectId)).getEpoch();
         }catch (IllegalArgumentException i){
@@ -77,6 +76,15 @@ public class Client {
             System.out.println(i);
         }
     }
+
+    public void sendE(long epoch, double latitude, double longtitude, UUID clientId, ObjectId objectId){
+        String data = epoch + "~" + latitude + "~" + longtitude + "~" + clientId.toString() + "~" + objectId.toString();
+        try{
+            out.writeUTF(data);
+        }catch(IOException i){ System.out.println(i); }
+    }
+
+
 
     /** Terminate connection to server. Client object is terminated.*/
     public void close() {

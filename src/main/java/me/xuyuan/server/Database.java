@@ -10,6 +10,7 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import javax.print.Doc;
+import java.nio.file.FileSystemException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -50,6 +51,7 @@ public class Database {
     /**
      * Gets Coordinate object from target ObjectId
      * Returns null if object nonexistent or other error printed
+     * May throw FileSystemException
      * @param id ObjectId of intended object
      */
     public Coordinate getCoordinate(ObjectId id){
@@ -62,7 +64,7 @@ public class Database {
                 docs.add(doc);
             if(docs.size()!=1) {
                 System.out.println("Document retrieval gave " + docs.size() + " documents");
-                return null;
+                throw new FileSystemException("File search for " + id + " did not give 1 document only");
             }
             co = Coordinate.getCoordinate(docs.get(0));
             return co;
