@@ -1,24 +1,11 @@
 package me.xuyuan.TTA;
 
-import com.mongodb.Block;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoIterable;
-import me.xuyuan.data.Coordinate;
-import me.xuyuan.server.Database;
-import me.xuyuan.server.Process;
 import me.xuyuan.server.Server;
-import org.bson.Document;
-import org.bson.types.MinKey;
-import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
-import java.util.function.Consumer;
 
 public class Main {
 
