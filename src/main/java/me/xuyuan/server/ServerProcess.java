@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Process {
+public class ServerProcess {
 
     public static void sort(List<String> dataArray){
         List<Coordinate> data = new ArrayList<>();
@@ -42,7 +42,5 @@ public class Process {
             return null;
         }
     }
-
-
 
 }

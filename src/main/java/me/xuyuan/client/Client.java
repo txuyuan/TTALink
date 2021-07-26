@@ -2,22 +2,23 @@ package me.xuyuan.client;
 
 import me.xuyuan.data.Coordinate;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.UUID;
-import org.bson.types.ObjectId;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Client {
 
     private Socket socket = null;
     private DataOutputStream out = null;
+    private DataInputStream in = null;
 
     /**
      * Client object to send coordinate (time, location) data to server
      * Use Client.send with appropriate parameters for each set of time-location coordinates
-     * Remember to close connection with Client.close, or the connection will keep running and produce errors
      * If no address is supplied default of 34.126.108.92 is used
      * @return Client object to send data to server
      */
@@ -27,7 +28,6 @@ public class Client {
     /**
      * Client object to send coordinate (time, location) data to server
      * Use Client.send with appropriate parameters for each set of time-location coordinates
-     * Remember to close connection with Client.close, or the connection will keep running and produce errors
      * If no address is supplied default of 34.126.108.92 is used
      * @param address Target server address (IP Address)
      * @return Client object to send data to server
@@ -41,6 +41,7 @@ public class Client {
             socket = new Socket(address, 443);
             System.out.println("Connected");
             out = new DataOutputStream(socket.getOutputStream());
+            in = new DataInputStream(socket.getInputStream());
         }catch (UnknownHostException u){
             System.out.println(u);
         }catch (IOException i){
@@ -48,46 +49,41 @@ public class Client {
         }
     }
 
+
     //Functions
 
     /**
-     * Send coordinate data along established connection
-     * Note: Close connection after all data is sent
-     * @param year Year in Gregorian Calendar (eg. 2021)
-     * @param month Month of Year (eg. 7 for July)
-     * @param day Day of Month (eg. 4)
-     * @param hour Hour of Day (24h clock)
-     * @param minute Minute of Hour (0-59)
-     * @param latitude Latitude of location (-90 to 90)
-     * @param longtitude Longtitude of location (-180 to 180)
-     * @param uuid Unique Identifier for client. Ensure this is based on device
+     * Send list of coordinates for the day
+     * @param coList List of coordinates to be sent. Ensure all coordinates to be sent are included here. After data is sent, receiving potential contact cases will immediately begin
+     * @return Returned list of coordinates is the coordinates of all potential contact cases. Use this to display to client
      */
-    public void sendT (int year, int month, int day, int hour, int minute, double latitude, double longtitude, UUID uuid, ObjectId objectId){
-        try {
-            long epoch = (new Coordinate(year, month, day, hour, minute, latitude, longtitude, objectId)).getEpoch();
-        }catch (IllegalArgumentException i){
-            throw i;
+    public List<Coordinate> send(List<Coordinate> coList) throws IOException{
+        for(Coordinate co: coList){
+            String data = co.getEpoch() + "~" + co.getLatitude() + "~" + co.getLongtitude() + "~" + co.getClientID().toString() + "~" + co.getObjectId().toString();
+            try{ out.writeUTF(data); }
+            catch(IOException i){ i.printStackTrace(); }
         }
-        long epoch = (new Coordinate(year, month, day, hour, minute, latitude, longtitude, objectId)).getEpoch();
-        String data = epoch + "~" + latitude + "~" + longtitude + "~" + uuid.toString() + "~" + objectId.toString();
+        try{ out.writeUTF("over");}
+        catch(IOException i){ i.printStackTrace();}
+
+        List<Coordinate> rList = new ArrayList<>();
+        List<String> rData  = new ArrayList<>();
+        String inStr = "";
         try{
-            out.writeUTF(data);
-        }catch(IOException i){
-            System.out.println(i);
-        }
+            while(inStr!="over"){
+                inStr = in.readUTF();
+                rData.add(inStr);
+            }
+        }catch(IOException i){i.printStackTrace();}
+
+        if(rData.size() > 0)
+            rList = ClientProcess.parse(rData);
+        close();
+        return rList;
     }
 
-    public void sendE(long epoch, double latitude, double longtitude, UUID clientId, ObjectId objectId){
-        String data = epoch + "~" + latitude + "~" + longtitude + "~" + clientId.toString() + "~" + objectId.toString();
-        try{
-            out.writeUTF(data);
-        }catch(IOException i){ System.out.println(i); }
-    }
 
-
-
-    /** Terminate connection to server. Client object is terminated.*/
-    public void close() {
+    private void close() {
         try {
             out.close();
             socket.close();

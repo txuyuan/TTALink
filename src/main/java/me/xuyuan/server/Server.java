@@ -42,7 +42,7 @@ public class Server extends Thread{
             }
             line = "";
         }
-        Process.sort(data);
+        ServerProcess.sort(data);
         close();
     }
 
