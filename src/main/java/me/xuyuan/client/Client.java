@@ -60,11 +60,9 @@ public class Client {
     public List<Coordinate> send(List<Coordinate> coList) throws IOException{
         for(Coordinate co: coList){
             String data = co.getEpoch() + "~" + co.getLatitude() + "~" + co.getLongtitude() + "~" + co.getClientID().toString() + "~" + co.getObjectId().toString();
-            try{ out.writeUTF(data); }
-            catch(IOException i){ i.printStackTrace(); }
+            out.writeUTF(data);
         }
-        try{ out.writeUTF("over");}
-        catch(IOException i){ i.printStackTrace();}
+        out.writeUTF("over");
 
         List<Coordinate> rList = new ArrayList<>();
         List<String> rData  = new ArrayList<>();

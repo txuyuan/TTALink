@@ -23,7 +23,6 @@ public class ServerProcess {
 
         Database db = new Database("34.126.108.92:27017");
         db.save(data);
-        //db.close();
     }
 
 
