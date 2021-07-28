@@ -6,14 +6,13 @@ import java.util.concurrent.TimeUnit;
 
 public class ReadIn extends Thread{
     private Scanner in;
-    private MainData data;
 
-    public ReadIn(Scanner in, MainData data){
+    public ReadIn(Scanner in){
         this.in = in;
-        this.data = data;
     }
 
     public void run(){
+        MainData data = Main.data;
         Boolean readEn = true;
         while(readEn){
             System.out.print("> ");
@@ -24,7 +23,7 @@ public class ReadIn extends Thread{
                     readEn = false;
                     List<Boolean> connections = data.getConnections();
                     TimeUnit time = TimeUnit.SECONDS;
-                    while(connections.contains(true)) {
+                    while(data.getConnections().contains(true)) {
                         try {
                             time.sleep(Long.parseLong("1"));
                         }catch(InterruptedException e){e.printStackTrace();}

@@ -1,5 +1,6 @@
 package me.xuyuan.server;
 
+import me.xuyuan.TTA.Main;
 import me.xuyuan.TTA.MainData;
 
 import java.io.BufferedInputStream;
@@ -18,12 +19,12 @@ public class Server extends Thread{
     private MainData data;
     private int cInd;
 
-    public Server(Socket socket, ServerSocket server, MainData data, int cInd) throws IOException{
+    public Server(Socket socket, ServerSocket server, int cInd) throws IOException{
         this.socket = socket;
         this.server = server;
         in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         isRunning = true;
-        this.data = data;
+        this.data = Main.data;
         this.cInd = cInd;
         data.setStatus(cInd, true);
     }

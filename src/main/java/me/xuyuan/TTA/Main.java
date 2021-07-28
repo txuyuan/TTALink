@@ -9,9 +9,12 @@ import java.util.*;
 
 public class Main {
 
+    public static MainData data;
+
     public static void main (String[] args){
 
         MainData counter = new MainData();
+        data = counter;
 
         Scanner in = new Scanner(System.in);
         Thread readT = new ReadIn(in, counter);
@@ -28,7 +31,7 @@ public class Main {
                         server = new ServerSocket(443);
                         socket = server.accept();
                         System.out.println("Client Accepted");
-                        Thread t = new Server(socket, server, counter, ind);
+                        Thread t = new Server(socket, server, ind);
                         t.start();
                     }catch(IOException e){e.printStackTrace();}
                 }
