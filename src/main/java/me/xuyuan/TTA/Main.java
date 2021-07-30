@@ -17,7 +17,7 @@ public class Main {
         data = counter;
 
         Scanner in = new Scanner(System.in);
-        Thread readT = new ReadIn(in, counter);
+        Thread readT = new ReadIn(in);
         readT.start();
 
         switch(args[0]){
