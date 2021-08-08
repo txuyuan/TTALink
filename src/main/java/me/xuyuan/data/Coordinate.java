@@ -73,7 +73,7 @@ public class Coordinate implements Serializable {
         doc.append("time", time);
         doc.append("lat", lat);
         doc.append("longt", longt);
-        doc.append("clientId", clientID);
+        doc.append("clientId", clientID.toString());
         doc.append("_id", objectId);
         return doc;
     }
@@ -119,6 +119,11 @@ public class Coordinate implements Serializable {
     public String toString(){
         String output = "ObjectId: " + objectId + ", Time: " + time + ", Latitude: " + lat + ", Longtitude: " + longt + ", ClientId: " + clientID;
         return output;
+    }
+
+    /** Prints contents of Coordinate*/
+    public void print(){
+        System.out.println(toString());
     }
 
 }

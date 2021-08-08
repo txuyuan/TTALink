@@ -23,7 +23,7 @@ public class ReadIn extends Thread{
                     readEn = false;
                     List<Boolean> connections = data.getConnections();
                     TimeUnit time = TimeUnit.SECONDS;
-                    while(data.getConnections().contains(true)) {
+                    if(data.getConnections()!=null) while(data.getConnections().contains(true)) {
                         try {
                             time.sleep(Long.parseLong("1"));
                         }catch(InterruptedException e){e.printStackTrace();}
