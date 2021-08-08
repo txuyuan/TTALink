@@ -62,13 +62,13 @@ public class Client {
             String data = co.getEpoch() + "~" + co.getLatitude() + "~" + co.getLongtitude() + "~" + co.getClientID().toString() + "~" + co.getObjectId().toString();
             out.writeUTF(data);
         }
-        out.writeUTF("over");
+        out.writeUTF("overC");
 
         List<Coordinate> rList = new ArrayList<>();
         List<String> rData  = new ArrayList<>();
         String inStr = "";
         try{
-            while(inStr!="over"){
+            while(inStr!="overS"){
                 inStr = in.readUTF();
                 rData.add(inStr);
             }

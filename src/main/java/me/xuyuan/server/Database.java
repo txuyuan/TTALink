@@ -9,7 +9,10 @@ import me.xuyuan.data.Coordinate;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import javax.print.Doc;
+import javax.swing.event.DocumentEvent;
 import java.nio.file.FileSystemException;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -73,20 +76,17 @@ public class Database {
         return null;
     }
 
-
-
-    //TEMP
-    private Coordinate getTestCoordinate(){
-        Long epoch = Long.parseLong("1625840365");
-        Double lat = Double.parseDouble("1.349024207451044");
-        Double longt = Double.parseDouble("103.71602810739925");
-        UUID clientId = UUID.fromString("9a9b92ca-9b1c-40e9-a297-345c4b3e6036");
-
-        Coordinate co = new Coordinate(epoch, lat, longt, clientId, new ObjectId());
-        return co;
+    public List<Coordinate> getMatches(UUID clientId){
+        MongoCollection<Document> collection = database.getCollection("matches");
+        List<Coordinate> matches = new ArrayList<>();
+        try{
+            collection.find(Filters.eq("clientId", clientId))
+                    .forEach((Block<Document>) doc ->{
+                        matches.add(Coordinate.getCoordinate(doc));
+                    });
+        }catch(Exception e){e.printStackTrace();}
+        return matches;
     }
-
-
 
     public void close(){
         client.close();

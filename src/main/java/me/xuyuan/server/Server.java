@@ -2,19 +2,20 @@ package me.xuyuan.server;
 
 import me.xuyuan.TTA.Main;
 import me.xuyuan.TTA.MainData;
+import me.xuyuan.data.Coordinate;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Server extends Thread{
     private Socket socket = null;
     private ServerSocket server = null;
     private DataInputStream in = null;
+    private DataOutputStream out = null;
     private Boolean isRunning = false;
     private MainData data;
     private int cInd;
@@ -23,6 +24,7 @@ public class Server extends Thread{
         this.socket = socket;
         this.server = server;
         in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         isRunning = true;
         this.data = Main.data;
         this.cInd = cInd;
@@ -34,7 +36,7 @@ public class Server extends Thread{
         String line = "";
         List<String> data = new ArrayList<>();
 
-        while(line!="over"){
+        while(line!="overC"){
             try{
                 line = in.readUTF();
                 data.add(line);
@@ -43,7 +45,15 @@ public class Server extends Thread{
             }
             line = "";
         }
-        ServerProcess.sort(data);
+        UUID clientId = ServerProcess.sort(data);
+        List<Coordinate> matches = ServerProcess.getMatches(clientId);
+
+        try{
+            if(matches.size()!=0) for(Coordinate co: matches)
+                out.writeUTF(co.getEpoch() + "~" + co.getLatitude() + "~" + co.getLongtitude() + "~" + co.getClientID().toString() + "~" + co.getObjectId().toString());
+            out.writeUTF("overS");
+        }catch(IOException e){e.printStackTrace();}
+
         close();
     }
 
