@@ -2,9 +2,7 @@ package me.xuyuan.client;
 
 import me.xuyuan.data.Coordinate;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -13,35 +11,20 @@ import java.util.List;
 public class Client {
 
     private Socket socket = null;
-    private DataOutputStream out = null;
-    private DataInputStream in = null;
+    private PrintStream out = null;
+    private BufferedReader in = null;
 
-    /**
-     * Client object to send coordinate (time, location) data to server
-     * Use Client.send with appropriate parameters for each set of time-location coordinates
-     * If no address is supplied default of 34.126.108.92 is used
-     * @return Client object to send data to server
-     */
     public Client (){
         connect("34.126.108.92");
     }
-    /**
-     * Client object to send coordinate (time, location) data to server
-     * Use Client.send with appropriate parameters for each set of time-location coordinates
-     * If no address is supplied default of 34.126.108.92 is used
-     * @param address Target server address (IP Address)
-     * @return Client object to send data to server
-     */
-    public Client(String address){
-        connect(address);
-    }
+    public Client(String address){ connect(address); }
 
     private void connect(String address){
         try{
-            socket = new Socket(address, 443);
+            socket = new Socket(address, 8082);
             System.out.println("Connected");
-            out = new DataOutputStream(socket.getOutputStream());
-            in = new DataInputStream(socket.getInputStream());
+            out = new PrintStream(socket.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         }catch (UnknownHostException u){
             System.out.println(u);
         }catch (IOException i){
@@ -60,16 +43,16 @@ public class Client {
     public List<Coordinate> send(List<Coordinate> coList) throws IOException{
         for(Coordinate co: coList){
             String data = co.getEpoch() + "~" + co.getLatitude() + "~" + co.getLongtitude() + "~" + co.getClientID().toString() + "~" + co.getObjectId().toString();
-            out.writeUTF(data);
+            out.println(data);
         }
-        out.writeUTF("overC");
+        out.println("overC");
 
         List<Coordinate> rList = new ArrayList<>();
         List<String> rData  = new ArrayList<>();
         String inStr = "";
         try{
             while(inStr!="overS"){
-                inStr = in.readUTF();
+                inStr = in.readLine();
                 rData.add(inStr);
             }
         }catch(IOException i){i.printStackTrace();}
