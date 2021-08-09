@@ -12,14 +12,16 @@ import java.util.UUID;
 public class TestClass {
 
     static void test(){
-        System.out.println("\n\nStart");
+        System.out.println("\n\nTTALink Client Test Started");
 
-        System.out.println("Connecting...");
-        Client cl = new Client();
-        System.out.println("Connected!");
+        System.out.println("Connecting...\n");
+        Client cl = new Client("127.0.0.1");
 
-        Coordinate coT = new Coordinate(Long.parseLong("16072394762"), 1523.3391317312310583, 403.79496685803359, UUID.randomUUID(), new ObjectId());
+        System.out.println("Generating Coordinate\n");
+        ObjectId id = new ObjectId();
+        Coordinate coT = new Coordinate(Long.parseLong("16072394762"), 1523.3391317312310583, 403.79496685803359, UUID.randomUUID(), id);
 
+        System.out.println("Sending...");
         List<Coordinate> coList = new ArrayList<>();
         coList.add(coT);
         List<Coordinate> rList = new ArrayList<>();
@@ -27,9 +29,9 @@ public class TestClass {
             rList = cl.send(coList);
         }catch(IOException e){e.printStackTrace();}
 
-        for(Coordinate co: rList){
-            co.print();
-        }
+        if(!rList.contains(null) && rList.size()!=0) for (Coordinate co: rList){
+            System.out.print("Coordinate received >> "); co.print();
+        }else System.out.println("No matches found\n");
     }
 
 }

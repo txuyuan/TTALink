@@ -1,6 +1,7 @@
 package me.xuyuan.server;
 
-import com.mongodb.*;
+import com.mongodb.Block;
+import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -9,10 +10,7 @@ import me.xuyuan.data.Coordinate;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
-import javax.print.Doc;
-import javax.swing.event.DocumentEvent;
 import java.nio.file.FileSystemException;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

@@ -2,7 +2,10 @@ package me.xuyuan.client;
 
 import me.xuyuan.data.Coordinate;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -22,13 +25,15 @@ public class Client {
     private void connect(String address){
         try{
             socket = new Socket(address, 8082);
-            System.out.println("Connected");
-            out = new PrintStream(socket.getOutputStream());
+            System.out.println("Connected!");
+            out = new PrintStream(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         }catch (UnknownHostException u){
-            System.out.println(u);
+            u.printStackTrace();
+            System.exit(1);
         }catch (IOException i){
-            System.out.println(i);
+            i.printStackTrace();
+            System.exit(1);
         }
     }
 
@@ -44,21 +49,26 @@ public class Client {
         for(Coordinate co: coList){
             String data = co.getEpoch() + "~" + co.getLatitude() + "~" + co.getLongtitude() + "~" + co.getClientID().toString() + "~" + co.getObjectId().toString();
             out.println(data);
+            System.out.println("> Sent " + data);
         }
         out.println("overC");
+        System.out.println("Data sent, awaiting reply");
 
         List<Coordinate> rList = new ArrayList<>();
         List<String> rData  = new ArrayList<>();
         String inStr = "";
-        try{
-            while(inStr!="overS"){
-                inStr = in.readLine();
-                rData.add(inStr);
-            }
-        }catch(IOException i){i.printStackTrace();}
+        while(inStr.equalsIgnoreCase("overS") && inStr!=null){
+            inStr = in.readLine();
+            rData.add(inStr);
+            System.out.println("> Received " + inStr);
+        }
+        System.out.println("Data received, processing...");
 
-        if(rData.size() > 0)
+        if(rData.contains("overS")) rData.remove("overS");
+        if(rData.size() != 0)
             rList = ClientProcess.parse(rData);
+        if(rList.size()==0) System.out.println("> Parsed a null response (no matches)");
+        else System.out.println("> Parsed to " + rList.toString());
         close();
         return rList;
     }
