@@ -24,7 +24,7 @@ Project members are Alrik, Xuyuan, Jingda, Cheeheng
 ## TTAServer
 > C++ based server-side program to process data on the server side
 > 
-> Git repo not uploaded
+> https://github.com/AKEevee/TTAServer
 > 
 > Module managed by Alrik (AKEevee)
 > 
