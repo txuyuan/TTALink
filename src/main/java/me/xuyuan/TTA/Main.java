@@ -14,6 +14,8 @@ public class Main {
 
         if(args.length!=0 && args[0].equals("client"))
             TestClass.test();
+        if(args.length!=0 && args[0].equals("server"))
+            TestClass.serverGenerate();
         else serverStart();
 
     }

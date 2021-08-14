@@ -2,10 +2,12 @@ package me.xuyuan.TTA;
 
 import me.xuyuan.client.Client;
 import me.xuyuan.data.Coordinate;
+import me.xuyuan.server.Database;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,6 +34,22 @@ public class TestClass {
         if(!rList.contains(null) && rList.size()!=0) for (Coordinate co: rList){
             System.out.print("Coordinate received >> "); co.print();
         }else System.out.println("No matches found\n");
+    }
+
+    static void serverGenerate(){
+        try{
+            System.out.println("Generating");
+            Long epoch = System.currentTimeMillis()*1000;
+            epoch = epoch-epoch%1;
+            Coordinate co5 = new Coordinate(epoch+198, 1523.339171233120000, 123.339173120583, UUID.randomUUID(), new ObjectId());
+            List<Coordinate> coList = Arrays.asList(co5);
+            System.out.println("List generated");
+            Database db = new Database();
+            System.out.println("Database connected");
+            db.save(coList);
+            System.out.println("Completed");
+            System.exit(0);
+        }catch(Exception e){e.printStackTrace();}
     }
 
 }

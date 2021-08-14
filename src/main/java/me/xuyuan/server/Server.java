@@ -50,10 +50,8 @@ public class Server extends Thread{
         }
         System.out.println("Data received, sorting and replying");
 
-        //UUID clientId = ServerProcess.sort(data);
-        //List<Coordinate> matches = ServerProcess.getMatches(clientId);
-        List<Coordinate> matches = new ArrayList<>();
-        //TODO:RESET BACK TO MONGO PROCESS
+        UUID clientId = ServerProcess.sort(data);
+        List<Coordinate> matches = ServerProcess.getMatches(clientId);
 
         if(matches.size()!=0) for(Coordinate co: matches){
             String coStr = co.getEpoch() + "~" + co.getLatitude() + "~" + co.getLongtitude() + "~" + co.getClientID().toString() + "~" + co.getObjectId().toString();

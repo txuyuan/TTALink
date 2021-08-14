@@ -70,22 +70,27 @@ public class Coordinate implements Serializable {
     //Codec
     public Document getDocument(){
         Document doc = new Document();
-        doc.append("time", time);
-        doc.append("lat", lat);
-        doc.append("longt", longt);
-        doc.append("clientId", clientID.toString());
-        doc.append("_id", objectId);
+        try{
+            doc.append("time", time);
+            doc.append("lat", lat);
+            doc.append("longt", longt);
+            doc.append("clientId", clientID.toString());
+            doc.append("_id", objectId);
+        }catch(Exception e){e.printStackTrace();}
         return doc;
     }
 
     public static Coordinate getCoordinate(Document doc){
-        Long time = (Long)doc.get("time");
-        Double lat = (Double)doc.get("lat");
-        Double longt = (Double)doc.get("longt");
-        UUID clientId = (UUID)doc.get("clientId");
-        ObjectId objectId = (ObjectId)doc.get("_id");
+        Coordinate coordinate = null;
+        try{
+            Long time = (Long)doc.get("time");
+            Double lat = (Double)doc.get("lat");
+            Double longt = (Double)doc.get("longt");
+            UUID clientId = (UUID)doc.get("clientId");
+            ObjectId objectId = (ObjectId)doc.get("_id");
+            coordinate = new Coordinate(time, lat, longt, clientId, objectId);
+        }catch(Exception e){e.printStackTrace();}
 
-        Coordinate coordinate = new Coordinate(time, lat, longt, clientId, objectId);
         return coordinate;
     }
 
