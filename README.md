@@ -85,37 +85,36 @@ Methods:
 >> Format: "ObjectId: " + objectId + ", Time: " + time + ", Latitude: " + lat + ", Longtitude: " + longt + ", ClientId: " + clientID
 >> 
 > print()
->> Prints toString()
+>> Prints out results of toString()
 >> 
-> Getters
->> getLatitude()
->>> Returns | double
->>> 
->> getLongtitude()
->>> Returns | double
->>> 
->> getEpoch()
->>> Returns | long
->>> 
->> getClientId()
->>> Returns | UUID (java.util.UUID)
->>>
->> getObjectId()
->>> Returns | ObjectId (org.bson.types.ObjectId)
->>>
->> getYear()
->>> Returns | int
->>>
->> getMonth()
->>> Returns | int
->>>
->> getDay()
->>> Returns | int
->>>
->> getHour()
->>> Returns | int
->>>
->> getMinute()
->>> Returns | int
->>> 
+> getLatitude()
+>> Returns | double
+>> 
+> getLongtitude()
+>> Returns | double
+>> 
+> getEpoch()
+>> Returns | long
+>> 
+> getClientId()
+>> Returns | UUID (java.util.UUID)
+>>
+> getObjectId()
+>> Returns | ObjectId (org.bson.types.ObjectId)
+>>
+> getYear()
+>> Returns | int
+>>
+> getMonth()
+>> Returns | int
+>>
+> getDay()
+>> Returns | int
+>>
+> getHour()
+>> Returns | int
+>>
+> getMinute()
+>> Returns | int
+>> 
   
