@@ -1,8 +1,10 @@
 # TTA
-TraceTogether Alternative made using Java, C++, Android and MongoDB
+TraceTogether Alternative made using Java, C++, Android and MongoDB.
 
 Project members are Alrik, Xuyuan, Jingda, Cheeheng
 
+Project Report is available at:
+    https://github.com/txuyuan/TTADocs/blob/main/TTA%20Report.pdf
 
 
 ### TTALink
@@ -117,4 +119,3 @@ Methods:
 > getMinute()
 >> Returns | int
 >> 
-  
