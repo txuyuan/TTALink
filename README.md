@@ -1,32 +1,38 @@
 # TTA
-TraceTogether Alternative made using Java, C++, Android and MongoDB.
+[![Java](https://img.shields.io/badge/Java-E87D25?style=flat-square&logo=java&logoColor=white)](https://www.java.com/en/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-3EA145?style=flat-square&logo=mongodb&logoColor=white)](https://www.mongodb.com)
+[![SocketIO](https://img.shields.io/badge/SocketIO-87C23C?style=flat-square&logo=socketdotio&logoColor=white)](https://socket.io)
+[![Android](https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=android&logoColor=white)](https://www.apple.com/sg/ios/ios-14)
+[![Ubuntu](https://img.shields.io/badge/Ubuntu-DE4815?style=flat-square&logo=ubuntu&logoColor=white)](https://ubuntu.com)
+[![Google Cloud](https://img.shields.io/badge/Google_Cloud-D94830?style=flat-square&logo=googlecloud&logoColor=white)](https://cloud.google.com)
+
+Alternative system to TraceTogether. 
 
 Project members are Alrik, Xuyuan, Jingda, Cheeheng
 
 Project Report is available at:
-    https://github.com/txuyuan/TTADocs/blob/main/TTA%20Report.pdf
+    <i>https://github.com/txuyuan/TTADocs/blob/main/Report.pdf</i>
 
 
-### TTALink
+<h3><a href="https://github.com/txuyuan/TTALink" target="blank">TTALink</a></h3>
+
 > Datalink for TTA (Locations &amp; Warnings) | Server-side receiver and preliminary data processing | Interface for integration into client-side
 > 
-> https://github.com/txuyuan/TTALink
-> 
 > Module managed by Xuyuan (txuyuan)
->
-
-### TTAClient
-> Android-based client for TTA system. Includes warnings for potentially found matches and a map displaying available location history
 > 
-> https://github.com/JDAED/TTAClient
+
+
+<h3><a href="https://github.com/JDAED/TTAClient" target="blank">TTAClient</a></h3>
+
+> Android-based client for TTA system. Includes warnings for potentially found matches and a map displaying available location history
 > 
 > Module managed by Jingda (JDAED)
 >
 
-### TTAServer
+
+<h3><a href="https://github.com/AKEevee/TTAServer" target="blank">TTAServer</a></h3>
+
 > C++ based server-side program to process data on the server side
-> 
-> https://github.com/AKEevee/TTAServer
 > 
 > Module managed by Alrik (AKEevee)
 >  
