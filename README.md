@@ -34,7 +34,7 @@ C++ based server-side program to process data on the server side
 
 
 <br></br>
-### TTALink Documentation
+## TTALink Documentation
 * **[Client](./Documentation/Client.md)**
 
 * **[Coordinate](./Documentation/Coordinate.md)**
@@ -42,7 +42,7 @@ C++ based server-side program to process data on the server side
 
 
 <br></br>
-### Licenses
+## Licenses
 Source code licensed under [GNU GPL v3.0](./LICENSE)
 
 Notes and documentation licensed under [GNU FDL v1.3](./LICENSE-Documents)
