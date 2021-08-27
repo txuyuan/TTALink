@@ -12,7 +12,7 @@ Object governing client-side interface. Simply initialise object and send List o
 
 ***Methods***
 
-* Send(List<Coordinate)
+* Send(List<Coordinate>)
   * Takes input list as Coordinate data to send to server 
   * Returns List<Coordinate> of found matches
   * Throws IOException - Exceptions in database/socket operations
