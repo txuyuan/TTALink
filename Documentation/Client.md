@@ -3,7 +3,7 @@
 
 ---
 
-Client-side interface
+Object governing client-side interface. Simply initialise object and send List of Coordinate(s) through with Send(). Send() automatically closes connection after transmission is completed. No further action is required
 
 ***Constructors***
 
