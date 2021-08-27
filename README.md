@@ -9,7 +9,7 @@
 
 
 Alternative system to TraceTogether done as our PW. Our project members are Alrik, Xuyuan, Jingda and Cheeheng. 
-> [Report](https://github.com/txuyuan/TTADocs/blob/main/Report.pdf) and [Report Slides](https://github.com/txuyuan/TTADocs/blob/main/Report%20Slides.pdf) available
+> [Written Report](https://github.com/txuyuan/TTADocs/blob/main/Report.pdf) and [Report Slides](https://github.com/txuyuan/TTADocs/blob/main/Report%20Slides.pdf) available
 
 **Contents**
 
