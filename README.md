@@ -1,7 +1,6 @@
 # TTA
 [![Java](https://img.shields.io/badge/Java-E87D25?style=flat-square&logo=java&logoColor=white)](https://www.java.com/en/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-3EA145?style=flat-square&logo=mongodb&logoColor=white)](https://www.mongodb.com)
-[![SocketIO](https://img.shields.io/badge/SocketIO-87C23C?style=flat-square&logo=socketdotio&logoColor=white)](https://socket.io)
 [![Android](https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=android&logoColor=white)](https://www.apple.com/sg/ios/ios-14)
 [![C++](https://img.shields.io/badge/C++-00599C?style=flat-square&logo=cplusplus&logoColor=white)](https://en.wikipedia.org/wiki/C%2B%2B)
 [![Ubuntu](https://img.shields.io/badge/Ubuntu-DE4815?style=flat-square&logo=ubuntu&logoColor=white)](https://ubuntu.com)
