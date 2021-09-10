@@ -6,6 +6,9 @@
 [![Ubuntu](https://img.shields.io/badge/Ubuntu-DE4815?style=flat-square&logo=ubuntu&logoColor=white)](https://ubuntu.com)
 [![Google Cloud](https://img.shields.io/badge/Google_Cloud-D94830?style=flat-square&logo=googlecloud&logoColor=white)](https://cloud.google.com)
 
+### This project has ended and this repo has been archived. 
+
+<br></br>
 
 Alternative system to TraceTogether done as our PW. Our project members are Alrik, Xuyuan, Jingda and Cheeheng. 
 > [Written Report](https://github.com/txuyuan/TTADocs/blob/main/Report.pdf) and [Report Slides](https://github.com/txuyuan/TTADocs/blob/main/Report%20Slides.pdf) available
